@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <head th:replace="fragments/common :: head('online shopping')">
+  	
+   </head>
+
+  <body>
+  
+   <div th:replace="fragments/header :: header(itemList = ${itemList})"></div>
+  <form th:action="@{/}"  style="display: none;">
+  	<button id="back" type="submit"></button>
+  </form>
+   <div class="mx-auto w-75 my-4">
+   		<div class="d-flex flex-row">
+  			<div class="col-1" >#id</div>
+  			<div class="col-4 text-center">Name</div>
+  			<div class="col-2 text-center">Price</div>
+  			<div class="col-3 text-center">Qty</div>
+  			<div class="col-2 d-flex flex-row justify-content-end">Total</div>
+  		</div>
+  	  		
+  		<div id="cartList">
+  			<!-- tableInject here -->
+  		</div>
+  		<div class="d-flex flex-row justify-content-end">
+  			<div id="summary" class="col-2 d-flex flex-row justify-content-end" style="border-bottom: 4px solid black; border-top: 4px solid black">
+  			<!-- inject summary -->
+  			</div>
+  		</div>
+  		<div id="create-order" class="d-flex flex-row justify-content-center mt-5">
+  			<button class="btn btn-primary">Create Order</button>
+  		</div>
+   </div>
+
+  <script th:replace= "fragments/js/jquery_order :: jquery"></script>
+  	<div th:replace="fragments/modal/order_confirm_modal :: orderConfirmModal"></div>
+  </body>
+
+</html>

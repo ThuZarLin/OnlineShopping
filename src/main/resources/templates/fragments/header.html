@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+ 	<!-- Header -->
+ 	<div th:fragment="header(itemList)" class="bg-dark text-light ">
+ 		<div class="w-75 py-4 d-flex flex-row justify-content-between container mx-auto">
+ 			<div class="my-auto">Shopify</div>
+	 		<div class="d-flex flex-row" >
+	 			<a th:href="@{/}" class="mx-3 text-light my-auto" style="text-decoration: none;">Home</a>
+	 			<a th:href="@{/order}" class="mx-3 text-light my-auto" style="text-decoration: none;">Order</a>
+	 			<form th:action="@{/create/order}" method="POST" class="mx-3 position-relative my-auto">
+	 				<!--$("input[name='itemList']") -->
+	 				<input type="hidden" name="itemList" th:value="${itemList}"/>
+	 				<button type="submit" class="btn btn-outline">
+	 					<i class="bi bi-cart3 text-light h3"></i>
+		 				<span id="badgeCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+						    0
+					  	</span>
+	 				</button>
+	 			</form>
+	 			<div th:if="${Auth == null}" onclick="$('#loginModal').modal('show')" class="my-auto d-flex flex-row text-light" style="text-decoration: none; cursor: pointer; margin-left: 10px">
+	 				<i class="bi bi-person-circle h4 my-auto"></i>
+	 				<span class="my-auto" style="margin-left: 10px">Login</span>
+	 			</div>
+	 			<div th:unless="${Auth == null}" class="my-auto d-flex flex-row text-light" style="text-decoration: none; cursor: pointer; margin-left: 10px">
+	 				<span class="my-auto" th:text="${Auth.username}" style="margin-right: 10px"></span>
+	 				<a th:href="@{/logout}">
+	 					<i class="bi bi-box-arrow-right h4 my-auto"></i>
+	 				</a>
+	 			</div>
+	 		</div>
+ 		</div>
+ 	</div>
+</html> 

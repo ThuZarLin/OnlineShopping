@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<script type="text/javascript" th:fragment = "jquery">
+	  	$(document).ready(function(){
+	  		//let row = getElementById("hello");//pure js
+	  		//let row = $("#hello");
+	  		//let nameDiv = $("#name");
+	  		//let name = nameDiv.text();
+	  		//alert(name);
+	  		//nameDiv.text("Thu Zar");
+	  		//nameDiv.css("background-color", "yellow");
+	  		//console.log(nameDiv.attr("class"));
+	  		//nameDiv.attr("class", "name text-center text-danger");
+	  		//const nameDiv = $("#name");
+	  		//const name = "Thu Zar Lin";
+	  		//const age = 24;
+	  		//const address = "Hlaing";
+	  		//const htmlElement = `
+	  			//<div class="d-flex flex-row justify-content-between w-75 mx-auto my-3">
+	  				//<div>Name: ${name}</div>
+	  				//<div>Age: ${age}</div>
+	  				//<div>Address: ${address}</div>
+	  			//</div>`;
+	  		//nameDiv.html(htmlElement);
+	  		//nameDiv.click(function(){
+	  			//nameDiv.hide();
+	  		//})
+	  		//const nameDiv = $("#name");
+	  		//const itemId = nameDiv.attr("item-id");
+	  		//const itemName = nameDiv.attr("item-name");
+	  		//const itemPrice = nameDiv.attr("item-price");
+	  		//console.log({itemId, itemName, itemPrice});
+	  		
+	  		/* $("#loginBtn").click(() => {
+	  			$("$loginModal").modal('show');
+	  		}) */
+	  		if($("#err_msg").val()){
+	  			$("#loginModal").modal('show');
+	  		}
+	  		$(".plus").click(function(){
+	  			const itemId = $(this).attr("item-id");
+	  			const itemName = $(this).attr("item-name");
+	  			const itemPrice = $(this).attr("item-price");
+	  			const qtyDiv = $(`div[qty-id = "${itemId}"]`);
+	  			const itemListInput = $("input[name='itemList']");
+	  			let itemList = JSON.parse(itemListInput.val());//convert to js object {}
+	  			let updatedList;
+	  			//console.log(itemListInput.val());
+	  			if(qtyDiv.text() == 0){
+	  				const newItem = {//create new
+	  						id: itemId,
+	  						name: itemName,
+	  						price: itemPrice,
+	  						qty: 1,
+	  				};
+	  				updatedList = [...itemList, newItem];
+	  				
+	  			}else{//increase qty
+	  				updatedList = itemList.map(({id, name, price, qty}) => {
+	  					if(id == itemId){
+	  						return {id, name, price, qty: qty+1};
+	  					}else{
+	  						return {id, name, price, qty};
+	  					}
+	  				});
+	  			}
+	  			//update input
+	  			itemListInput.val(JSON.stringify(updatedList));
+	  			
+	  			//update badge count
+				qtyDiv.text(parseInt(qtyDiv.text())+ 1 );
+	  			
+	  			//update cart's item count
+	  			$("#badgeCount").text(updatedList.length);
+	  		});
+	  		
+	  		//minus
+	  		$(".minus").click(function(){
+	  			const itemId = $(this).attr("item-id");
+	  			const itemName = $(this).attr("item-name");
+	  			const itemPrice = $(this).attr("item-price");
+	  			const qtyDiv = $(`div[qty-id = "${itemId}"]`);
+	  			const itemListInput = $("input[name='itemList']");
+	  			let itemList = JSON.parse(itemListInput.val());//convert to js object {}
+	  			let updatedList;
+	  			if(qtyDiv.text() != 0){
+	  				//if(qyt == 1) => remove from the input
+	  				if(qtyDiv.text() == 1){
+	  					updatedList = itemList.filter((item) => item.id != itemId);
+	  				}else{//else qty-1 => update item list to input
+	  					updatedList = itemList.map(({id, name, price, qty}) => {
+		  					if(id == itemId){
+		  						return {id, name, price, qty: qty - 1};
+		  					}else{
+		  						return {id, name, price, qty};
+		  					}
+		  				});
+	  				}
+	  			//update input
+		  			itemListInput.val(JSON.stringify(updatedList));
+		  			
+		  			//update badge count
+					qtyDiv.text(parseInt(qtyDiv.text()) - 1 );
+		  			
+		  			//update cart's item count
+		  			$("#badgeCount").text(updatedList.length);
+	  			}
+	  		
+	  		})
+  		
+  	})
+  </script>
+</html>

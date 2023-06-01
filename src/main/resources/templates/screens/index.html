@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <head th:replace="fragments/common :: head('online shopping')">
+  	
+   </head>
+
+  <body>
+  	<input id="err_msg" type="hidden" th:value="${err_msg}">
+   <div th:replace="fragments/header :: header('[]')"></div>
+   <div id="name" class="name" th:item-id = "${itemId}" th:item-name = "${itemName}" th:item-price = "${itemName}">   		<!--html injection here  -->
+   </div>
+   <div class="mx-auto w-75 my-4">
+   		<div id="hello" class="row">
+   			
+   			<div class="col-3" th:each="item : ${Items}" th:object="${item}">
+   				<div class="card m-2" style="border-radius: 15px;">
+   					<img th:src="*{photoUrl}" class="card-img-top" style="border-radius: 15px 15px 0 0; height: 200px">
+					 <div class="card-body">
+					 	<p class="d-flex flex-row" style="font-weight: bold" th:text="*{#numbers.formatDecimal(price, 0, 'COMMA', 0, 'POINT')} + Kyats"></p>
+					 	<p class="card-title" th:text="*{name}" style="height: 50px;"></p>
+					    <div class="d-flex flex-row justify-content-center">
+					    	<i class="bi bi-dash-square h3 my-auto minus" style="cursor: pointer;" th:item-id = "*{id}" th:item-name = "*{name}" th:item-price= "*{price}"></i>
+					    	<div class="my-auto mx-2" th:qty-id = "*{id}">0</div>
+					    	<i class="bi bi-plus-square h3 my-auto plus" style="cursor: pointer;" th:item-id = "*{id}" th:item-name = "*{name}" th:item-price= "*{price}"></i>
+					    </div>
+					  </div>
+   				</div>
+			</div>
+   		
+   		</div>
+   </div>
+	<!-- Modal -->
+	<div th:replace="fragments/modal/login_modal :: loginModal"></div>
+  <script th:replace= "fragments/js/jquery_index :: jquery"></script>
+  </body>
+
+</html>

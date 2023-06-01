@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.online_shopping.repository.ShopMapper">
+ 	<resultMap type="com.online_shopping.entity.ItemEntity" id="itemResultMap">
+ 		<id column="id" property="id"></id>
+ 		<result column="name" property="name"></result>
+ 		<result column="price" property="price"></result>
+ 		<result column="photo_url" property="photoUrl"></result>
+ 		<result column="category_id" property="categoryId"></result>
+ 	</resultMap>
+ 	
+ 	<select id="getAllItems" resultMap="itemResultMap">
+ 		SELECT * FROM items;
+ 	</select>
+ 	
+ 	<resultMap type="com.online_shopping.entity.UserEntity" id="userResultMap">
+ 		<id column="id" property="id"></id>
+ 		<result column="username" property="username"></result>
+ 		<result column="email" property="email"></result>
+ 		<result column="address" property="address"></result>
+ 		<result column="role_id" property="roleId"></result>
+ 	</resultMap>
+ 	
+ 	<select id="login" resultMap="userResultMap">
+ 		SELECT id,username,email,address,role_id FROM users
+ 		WHERE email=#{email} AND password=#{password};
+ 	</select>
+ 	
+ 	<select id="isEmailSatisfy" resultType="boolean">
+ 		SELECT
+ 		CASE WHEN COUNT(*) = 0 THEN  TRUE
+ 		ELSE FALSE END AS "is_email_satisfy"
+ 		FROM users
+ 		WHERE email = #{email}
+ 	</select>
+ 	
+ 	<select id="getDivisions" resultType="com.online_shopping.entity.DivisionEntity">
+ 		Select * FROM divisions;
+ 	</select>
+ 	
+ 	<select id="createOrder" resultType="int">
+ 		INSERT INTO orders(receiver_name, receiver_phone, receiver_address, user_id, division_id)
+ 		VALUES (#{receiverName},#{receiverPhone}, #{receiverAddress}, #{userId}, #{divisionId});
+ 		SELECT max(id) FROM orders;
+ 	</select>
+ 	
+ 	<insert id="createOrderDetails">
+ 		INSERT INTO order_details(quantity, order_id, item_id)
+ 		VALUES (#{qty}, #{orderId}, #{itemId});
+ 	</insert>
+</mapper>

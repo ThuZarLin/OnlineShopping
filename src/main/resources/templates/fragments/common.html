@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" type="image/x-icon" href="https://cdn.qiita.com/assets/favicons/public/production-c620d3e403342b1022967ba5e3db1aaa.ico">
+    <link rel="apple-touch-icon" type="image/png" href="https://cdn.qiita.com/assets/favicons/public/apple-touch-icon-ec5ba42a24ae923f16825592efdc356f.png">
+    <title th:text="${title}"></title>
+    <link 
+    	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+    	rel="stylesheet"
+    />
+    <link 
+    	rel="stylesheet" 
+    	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" 
+    />
+    <script 
+    	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    >
+    </script>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script th:replace="fragments/js/module::module"></script>
+</head>
+<body>
+ 	<!-- Header -->
+ 	<div th:fragment="header(Auth)" class="py-3" style="background-color:#E2F0FF">
+		<div class="mx-auto w-50 d-flex flex-row justify-content-between text-light ">
+			<div class="h4 text-dark">部屋の予約</div>
+			<div class="d-flex flex-row ">
+				<a href="" class="text-decoration-none mx-5 ">部屋一覧</a>
+				<div th:if="${Auth}" class="text-dark" th:text="${Auth.username}"></div>
+				<a th:if="${param.query != 'http://localhost:8080/login'}" th:href="@{/login}" th:unless="${Auth}" class="text-decoration-none text-dark" style="cursor:pointer">ログイン</a>
+				<a th:if="${Auth}"  th:href="@{/logout}" class="text-decoration-none mx-2"><i class="bi bi-box-arrow-right h5 mx-3 text-[#4083be]" style=""></i></a>
+			</div>
+		</div>
+	</div>
+ 	
+ 	<!-- Footer -->
+ 	<div th:fragment="footer(left,right)" class="py-3 bg-dark text-light" style="position: fixed; bottom: 0; width: 100%">
+ 		<div class="container d-flex flex-row justify-content-between">
+ 			<div th:text="${left}"></div>
+ 			<div th:text="${right}"></div>
+ 		</div>
+ 	</div>
+ 	
+ 	<!-- Modal -->
+ 	
+ 	<!-- Catch From Message Delivery -->
+	<input type="hidden" name="msg_title" th:msg_title="${msg_title}"/>
+	<input type="hidden" name="msg_body" th:msg_body="${msg_body}"/>
+ 	
+ 	<!-- Booking Cancel Modal -->
+ 	<div th:fragment="bookCancelModal" class="modal fade" id="bookCancelModal" tabindex="-1" role="dialog" aria-labelledby="bookCancelModal" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered "  role="document">
+	    <div class="modal-content" style="border-radius:20px">
+	      <div class="modal-header d-flex flex-row justify-content-between">
+	        <div class="modal-title text-center h4 col-11" id="exampleModalCenterTitle"><div>部屋予約キャンセル</div></div>
+	       	<div class="col-1">
+		       	<div class="bookCancelModalClose" style="cursor:pointer;"><i class="bi bi-x h1" ></i></div>
+	       	</div>
+	      </div>
+	      <div class="modal-body text-center my-3" id="bookCancelModalBody">
+	        <!-- Error Msg injection here -->
+	      </div>
+	      <form th:action="@{/booking/cancel}" method="post" class="modal-footer d-flex flex-row justify-content-center">
+	      	<input name="cancelRoomId" type="hidden">
+	      	<input name="bookingId" type="hidden">
+	        <button type="submit" class="btn btn-primary px-5" style="border-radius: 10px;" data-dismiss="modal">OK</button>
+	      </form>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- Error Modal -->
+	<div th:fragment="errorModal" class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModal" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered "  role="document">
+	    <div class="modal-content" style="border-radius:20px">
+	      <div class="modal-header d-flex flex-row justify-content-between">
+	        <div class="modal-title text-center h4 col-11">
+	        	<div  id="errorModalTitle">
+	        		<!-- Title injection here -->
+	        	</div>
+	        </div>
+	       	<div class="col-1">
+		       	<div class="errorModalClose" style="cursor:pointer;"><i class="bi bi-x h1" ></i></div>
+	       	</div>
+	      </div>
+	      <div class="modal-body text-center my-3" id="errorModalBody">
+	        <!-- Error Msg injection here -->
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+</body>
+</html>

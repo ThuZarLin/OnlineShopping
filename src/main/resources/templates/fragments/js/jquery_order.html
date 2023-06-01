@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<script type="text/javascript" th:fragment = "jquery">
+		const tableInject = (itemList) => {
+			//no item go to home page
+			if(itemList.length == 0){
+				$("#back").trigger("click");
+				return;
+			}
+			//let summary = 0;
+			let html="";
+	  		itemList.map(({id, name, price, qty}, index) => {
+	  			//summary += (price * qty);
+	  			html += `<div class="d-flex flex-row ${index % 2 == 0 ? 'bg-light' : 'bg-white'} py-3">
+				  			<div class="col-1" >${id}</div>
+				  			<div class="col-4 text-center">${name}</div>
+				  			<div class="col-2 text-center">${price}</div>
+				  			<div class="col-3 d-flex flex-row justify-content-center">
+					    		<i onclick="minusQty( ${id}, ${qty} )" class="bi bi-dash-square h3 my-auto minus" style="cursor: pointer;" item-id = "${id}" item-name = "${name}" item-price= "${price}"></i>
+						    	<div class="my-auto mx-2" th:qty-id = "*{id}">${qty}</div>
+						    	<i onclick="plusQty(${id})" class="bi bi-plus-square h3 my-auto plus" style="cursor: pointer;" item-id = "${id}" item-name = "${name}" item-price= "${price}"></i>
+						    </div>
+				  			<div class="col-2 d-flex flex-row justify-content-end">${ (() => (price * qty).toLocaleString())()}  Ks</div>
+				  			<!--<div class="col-2 d-flex flex-row justify-content-end">${(price * qty).toLocaleString()} Ks</div>-->
+			  			</div>`;
+	  		});
+	  			$("#cartList").html(html);
+	  			
+	  			$("#badgeCount").text(itemList.length);
+	  			
+	  			//update summary
+	  			//$("#summary").text(summary.toLocaleString() + " Ks");
+	  			//$("#summary").text(itemList.reduce((total, item) => total + (item.price * item.qty), 0 ) + " Ks");
+	  			$("#summary").text(itemList.reduce((total, {price,qty}) => total + (price * qty), 0 ).toLocaleString()+ " Ks");
+		}
+		
+		const minusQty = (itemId,qty)=>{
+			
+			const itemListInput = $("input[name='itemList']");
+		 	let itemList = JSON.parse( itemListInput.val() );
+		 	
+		 	let updatedList;
+		 	
+		 	if(qty == 1){
+		 		// remove from list
+		 		updatedList = itemList.filter( (item)=>item.id != itemId );
+		 	}else{
+		 		// qty - 1 and update list 
+		 		updatedList = itemList.map( ({id,name,price,qty})=>{
+		 			if( id == itemId ){
+		 				return { id,name,price,qty: qty - 1 };
+		 			}else{
+		 				return { id,name,price,qty };
+		 			}
+		 		} );
+		 	}
+		 	
+		 	itemListInput.val(JSON.stringify(updatedList));
+		
+		 	
+		 	// table inject
+		 	tableInject( updatedList );
+		}
+		
+		//plus qty
+		const plusQty = (itemId) => {
+			const itemListInput = $("input[name='itemList']");
+		 	let itemList = JSON.parse( itemListInput.val() );
+		 	
+		 	let updatedList = itemList.map(({id, name, price, qty}) => {
+					if(id == itemId){
+  						return {id, name, price, qty: qty+1};
+  					}else{
+  						return {id, name, price, qty};
+  					}
+  				});
+			itemListInput.val(JSON.stringify(updatedList));
+		
+		 	
+		 	// table inject
+		 	tableInject( updatedList );
+		 	
+		}
+		
+	  	$(document).ready(function(){
+	  		const itemListInput = $("input[name='itemList']");
+	  		let itemList = JSON.parse(itemListInput.val());
+	  		tableInject(itemList);
+	  		
+	  		//confirm order
+	  		$("#create-order").click(function(){
+		 		$('div > input[name=itemList]').val( $('form > input[name=itemList]').val() )
+		 		$('#orderConfirmModal').modal('show');
+		 	})
+	  			
+	  		})
+  </script>
+</html>

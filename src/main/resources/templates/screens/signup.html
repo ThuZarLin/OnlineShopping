@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <head th:replace="fragments/common :: head('online shopping')">
+  	
+   </head>
+
+  <body>
+  	<div th:replace="fragments/header :: header('[]')"></div>
+    <div class="mx-auto w-50 my-4">
+    	<div class="text-center h2">Sign Up</div>
+    	
+    	<div class="form-group mb-2">
+    		<label for="username" class="form-label">User Name</label>
+    		<input type="text" class="form-control" id="username" name= "username">
+    	</div>
+    	<div class="form-group mb-2">
+    		<label for="email" class="form-label">Email</label>
+    		<input type="email" class="form-control" id="email" name= "email">
+    		<div id="email-ok" class="text-success" style="display: none">Email is validate<i class="bi bi-check-lg"></i></div>
+    		<div id="email-err" class="text-danger" style="display: none"></div>
+    	</div>
+    	<div class="form-group mb-2">
+    		<label for="address" class="form-label">Address</label>
+    		<input type="text" class="form-control" id="address" name= "address">
+    	</div>
+    	<div class="form-group mb-2">
+    		<label for="password" class="form-label">Password</label>
+    		<div class="d-flex flex-row position-relative">
+    			<input type="password" class="form-control password-field" id="password" name= "password" data-target="#password-bar">
+    			<div class="position-absolute   my-auto h3 px-2" style="right: 0px">
+    				<i data-target="#password" class="eye-toggle bi bi-eye-slash" ></i>
+    			</div>
+    		</div>
+    		<div class="progress" style="height: 10px">
+  				<div id="password-bar" class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+			</div>
+		</div>
+    	<div class="form-group mb-2">
+    		<label for="confirmPassword" class="form-label">Confirm Password</label>
+    		<div class="d-flex flex-row position-relative">
+    			<input type="password" class="form-control password-field" id="confirm-password" name= "confirmPassword" data-target="#confirmPassword-bar">
+    			<div class="position-absolute   my-auto h3 px-2" style="right: 0px">
+    				<i data-target="#confirm-password" class="eye-toggle bi bi-eye-slash" ></i>
+    			</div>
+    		</div>
+    		<div class="progress" style="height: 10px">
+  				<div id="confirmPassword-bar" class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+			</div>
+    	</div>
+    </div>
+
+  	<script th:replace= "fragments/js/jquery_signup :: jquery"></script>
+  </body>
+
+</html>
+<!-- username email address password confirmpassword -->

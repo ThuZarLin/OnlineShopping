@@ -1,0 +1,126 @@
+--db name = 'online_shop'
+
+Drop Table If Exists roles;
+Drop Table If Exists users;
+Drop Table If Exists divisions;
+Drop Table If Exists categories;
+Drop Table If Exists items;
+Drop Table If Exists orders;
+Drop Table If Exists order_details;
+
+CREATE TABLE roles (
+	id serial PRIMARY KEY,
+	name VARCHAR ( 199 ) UNIQUE NOT NULL,
+	created_at TIMESTAMP Default now(),
+    updated_at TIMESTAMP Default now()
+);
+Create Table users (
+	id SERIAL NOT NULL,
+	username varchar(50) NOT NULL,
+	email varchar(199) unique NOT NULL,
+	password text NOT NULL,
+	address text NOT NULL,
+	role_id int Default 2,
+	created_at timestamp Default now(),
+	updated_at timestamp Default now(), 	
+	PRIMARY KEY(id)
+);
+Create Table divisions (
+	id SERIAL NOT NULL,
+	name varchar(50) NOT NULL,
+	created_at timestamp Default now(),
+	updated_at timestamp Default now(),
+	PRIMARY KEY(id)
+);
+Create Table orders (
+	id SERIAL NOT NULL,
+	receiver_name varchar(50) NOT NULL,
+	receiver_phone varchar(199) NOT NULL,
+	receiver_address text NOT NULL,
+	user_id int,
+ 	division_id int,
+	created_at timestamp Default now(),
+	updated_at timestamp Default now(), 	
+	PRIMARY KEY(id)
+);
+Create Table order_details (
+	id SERIAL NOT NULL,
+	quantity int NOT NULL,
+	order_id int,
+ 	item_id int,
+	created_at timestamp Default now(),
+	updated_at timestamp Default now(), 	
+	PRIMARY KEY(id)
+);
+Create Table categories (
+	id SERIAL NOT NULL,
+	name varchar(50) NOT NULL,
+	created_at timestamp Default now(),
+	updated_at timestamp Default now(),
+	PRIMARY KEY(id)
+);
+	Create Table items (
+	id SERIAL NOT NULL,
+	name varchar(50) NOT NULL,
+	 price int NOT NULL,
+	photo_url text NOT NULL,
+	category_id int,
+	created_at timestamp Default now(),
+	updated_at timestamp Default now(), 	
+	PRIMARY KEY(id)
+);
+
+-- simple data
+INSERT INTO roles(name)
+VALUES
+('admin'),
+('customer');
+
+INSERT INTO users(username,email,password,address)
+VALUES
+('Ma Ma','mama@gmail.com','1234','Hlaing Thar Yar'),
+('Mg Mg','mgmg@gmail.com','1235','Inn Sein');
+
+INSERT INTO divisions(name)
+VALUES
+('Hlaing Thar Yar'),
+('Inn Sein'),
+('Hlaing'),
+('San Chaung');
+
+INSERT INTO categories(name)
+VALUES
+('cosmetic'),
+('mobile');
+
+INSERT INTO orders(receiver_name,receiver_phone,receiver_address,user_id,division_id)
+VALUES
+('Amie','09421298939','Yangon',1,2),
+('Su','098655635','Mandalay',2,3);
+
+INSERT INTO items(name,price,photo_url,category_id)
+VALUES
+('Matt Lipstick 030', 19500,'/images/cosmetic1.jpg',1),
+('makeup',20000,'/images/cosmetic2.jpg',1),
+('lipstick',8900,'/images/cosmetic3.jpg',1),
+('REVLON _Superlustrous Lipstick',14900,'/images/cosmetic4.jpg',1),
+('Vaseline Dry Serum',7900,'/images/cosmetic5.jpg',1),
+('DEODORANT ROLL ON',7900,'/images/cosmetic6.jpg',1),
+('Dabo Lifting Sun - GO Cart',17400,'/images/cosmetic7.jpg',1),
+('LEBELAGE LASTING SUN CREAM',4800,'/images/cosmetic8.jpg',1),
+('Samsung A23',900000,'/images/mobile1.jpg',2),
+('vivo V27e 8GB+8GB (Extended Ram) + 128GB Rom',899800,'/images/mobile2.jpg',2),
+('VIVO Y67 Beauty Photo Smartphone (4GB+64GB)',153800,'/images/mobile3.jpg',2),
+('Samsung Galaxy A52 (8/128GB) Brand New',799000,'/images/mobile4.jpg',2),
+('iPhone 7 Second ( fingerprint sensor fail )',200500,'/images/mobile5.jpg',2),
+('Xiaomi Redmi 10C (4/64GB) Global Brand New',325000,'/images/mobile6.jpg',2),
+('Samsung Galaxy A52 (8/128GB) Brand New',799000,'/images/mobile7.jpg',2),
+('Samsung Galaxy M12 (4/64 GB) Brand New',379000,'/images/mobile8.jpg',2);
+
+INSERT INTO order_details(quantity,order_id,item_id)
+VALUES 
+(2,1,2),
+(5,1,1),
+(1,1,3),
+(10,2,1),
+(1,2,3);

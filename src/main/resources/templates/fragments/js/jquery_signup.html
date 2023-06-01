@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<script type="text/javascript" th:fragment = "jquery">
+		
+	  	$(document).ready(function(){
+	  		
+	  		$(".progress-bar").animate({width: "0%"},2000);
+	  		
+	  		//keydown event listener
+	  		$(".password-field").on("keyup", function(){
+	  			const progressBar = $( $(this).attr("data-target"));
+	  			const value = $(this).val();
+	  			const strong = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
+	  				if(value.length < 8){
+	  				progressBar.css("background-color", "red");
+	  				progressBar.animate({
+	  					width: "30%"
+	  				},300);
+	  			}else if(value.length > 7 && value.match(strong)){
+	  				progressBar.css("background-color", "green");
+	  				progressBar.animate({
+	  					width: "100%"
+	  				},300);
+	  			}
+	  		}); 
+	  		
+	  		//is email valid
+	  		$("#email").on("focusout",async function(){
+	  			const email = $(this).val();
+	  			const mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+	  			//null check
+	  			if(!email){
+	  				$("#email-err").text("email is required");
+	  			}
+	  			//check email format
+	  			else if(!email.match(mailFormat)){
+	  				$("#email-err").text("Error: Wrong email format");
+	  			}
+	  			//check email satisfy by api
+	  			else{
+	  				$.ajax({
+	  					url: `/check-email/${email}`
+	  				}).then((response)=>{
+	  					console.log(response);
+	  					$("#email-ok").show(1000);
+	  					$("#email-err").hide(1000);
+	  					return;
+	  				}).catch(({responseText}) => {
+	  					$("#email-err").text(responseText);
+	  					//console.log(responseText);
+	  				})
+	  			}
+	  			$("#email-err").show(1000);
+	  			$("#email-ok").hide(1000);
+	  		})
+	  		
+	  		$(".eye-toggle").on("click",function(){
+				const input = $( $(this).attr("data-target") );
+				if( input.attr("type")=="password" ){
+					$(this).attr("class","eye-toggle bi bi-eye-fill h3 px-2 my-auto");
+					input.attr("type","text");
+				}else{
+					$(this).attr("class","eye-toggle bi bi-eye-slash h3 px-2 my-auto");
+					input.attr("type","password");
+				}
+			});
+	  			
+	  	})
+  </script>
+</html>
